@@ -59,7 +59,48 @@ namespace AddressBook
             {
                 connection.Close();
             }
+        }
+            /// <summary>
+            /// UC17 UpdateDetailsInDB
+            /// </summary>
+            /// <returns></returns>
+            public static string UpdateDetailsInDB()
+            {
+                string state = "";
+                try
+                {
+                    connection = new SqlConnection(connectionString);
+                    string query = "update Contacts set State='Karnataka' where FirstName='Ruthik'; select * from Contacts where FirstName='Ruthik'";
 
+                    SqlCommand command = new SqlCommand(query, connection);
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            state = reader.GetString(4);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Row isn't updated");
+                    }
+                    reader.Close();
+                    return state;
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return state;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
     }
-}
